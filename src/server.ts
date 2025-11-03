@@ -1,10 +1,12 @@
 import express from 'express';
 import { sequelize } from './config/database.js';
 import tintaRoutes from './routes/TintaRoute.js';
-
+import { setupSwagger } from './config/swagger.js';
 
 const app = express();
 app.use(express.json());
+
+setupSwagger(app);
 
 app.get ("/health", async (req, res) => {
     
