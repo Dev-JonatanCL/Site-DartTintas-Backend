@@ -9,6 +9,7 @@ class Tinta extends Model {
     public cor!: string;
     public tipo!: string;
     public preco!: number;
+    public imageUrl!: string;
 }
 
 Tinta.init({
@@ -32,7 +33,12 @@ Tinta.init({
     preco: {
         type: DataTypes.DECIMAL(10, 2),
         allowNull: false
+    },
+    imageUrl: {
+        type: DataTypes.STRING,
+        allowNull: true
     }
+
 }, {
     sequelize,
     modelName: "Tinta"

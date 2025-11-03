@@ -16,7 +16,9 @@ export default {
     },
     async criarTinta (req: Request, res: Response){
         const { nome, cor, tipo, preco } = req.body;
-        const novaTinta = await Tinta.create ({ nome, cor, tipo, preco});
+        const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
+        
+        const novaTinta = await Tinta.create ({ nome, cor, tipo, preco, imageUrl });
         return res.status(201).json(novaTinta);
     },
     async atualizarTinta (req: Request, res: Response){

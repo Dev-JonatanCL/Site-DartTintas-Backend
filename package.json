@@ -22,6 +22,7 @@
   "homepage": "https://github.com/Dev-JonatanCL/Site-DartTintas-Backend#readme",
   "devDependencies": {
     "@types/express": "^5.0.3",
+    "@types/multer": "^2.0.0",
     "@types/node": "^24.9.1",
     "@types/swagger-jsdoc": "^6.0.4",
     "@types/swagger-ui-express": "^4.1.8",
@@ -32,6 +33,7 @@
   },
   "dependencies": {
     "express": "^5.1.0",
+    "multer": "^2.0.2",
     "sequelize": "^6.37.7",
     "sqlite3": "^5.1.7",
     "swagger-jsdoc": "^6.2.8",
