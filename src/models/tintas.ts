@@ -34,7 +34,8 @@ Tinta.init({
 
 }, {
     sequelize,
-    modelName: "Tinta"
+    modelName: "Tinta",
+    tableName: "tintas"
 });
 
 export default Tinta;
