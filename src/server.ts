@@ -1,5 +1,7 @@
 import express from 'express';
 import { sequelize } from './config/database.js';
+import tintaRoutes from './routes/TintaRoute.js';
+
 
 const app = express();
 app.use(express.json());
@@ -10,7 +12,7 @@ app.get ("/health", async (req, res) => {
     await sequelize.authenticate();
     res.json ({
         status: 'ok',
-        menssage: 'Banco de dados conectado',
+        message: 'Banco de dados conectado',
         timestamp: new Date()
     })
    } catch (error) {
@@ -22,6 +24,8 @@ app.get ("/health", async (req, res) => {
    }
 });
 app.use(express.json());
+
+app.use('/tintas', tintaRoutes);
 
 app.get("/", (req, res) => {
     res.send ("Api rodando")
