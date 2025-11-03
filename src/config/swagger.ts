@@ -95,5 +95,5 @@ export const setupSwagger = (app: Express) => {
   };
 
   app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec, swaggerOptions));
-  console.log('Swagger estilizado rodando em: https://site-darttintas-backend.azurewebsites.net//api-docs');
+  console.log('Swagger estilizado rodando em: https://site-darttintas-backend.azurewebsites.net/api-docs');
 };
