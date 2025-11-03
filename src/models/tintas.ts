@@ -1,6 +1,7 @@
 import { DataTypes, Model } from "sequelize";
 import { sequelize } from "../config/database.js";
 
+
 class Tinta extends Model {
 
     public id!: number;
