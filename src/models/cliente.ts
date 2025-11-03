@@ -1,11 +1,10 @@
 import { DataTypes, Model } from "sequelize";
 import { sequelize } from "../config/database.js";
 
-
-class Tinta extends Model {
+class Cliente extends Model {
+    
 }
-
-Tinta.init({
+Cliente.init({
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -15,26 +14,22 @@ Tinta.init({
         type: DataTypes.STRING,
         allowNull: false
     },
-    cor: {
+    email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true
+    },
+    senha: {
         type: DataTypes.STRING,
         allowNull: false
     },
-    tipo: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    preco: {
-        type: DataTypes.DECIMAL(10, 2),
-        allowNull: false
-    },
-    imageUrl: {
-        type: DataTypes.STRING,
-        allowNull: true
+    rule: {
+        type: DataTypes.ENUM('admin', 'user'),
+        allowNull: false,
+        defaultValue: 'user'
     }
-
 }, {
     sequelize,
-    modelName: "Tinta"
+    modelName: "Cliente",
+    tableName: "users"
 });
-
-export default Tinta;
