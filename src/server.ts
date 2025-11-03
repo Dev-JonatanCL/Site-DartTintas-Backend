@@ -2,6 +2,9 @@ import express from 'express';
 import { sequelize } from './config/database.js';
 import tintaRoutes from './routes/TintaRoute.js';
 import { setupSwagger } from './config/swagger.js';
+import { connectToDatabase } from './config/database.js';
+
+await connectToDatabase();
 
 const app = express();
 app.use(express.json());

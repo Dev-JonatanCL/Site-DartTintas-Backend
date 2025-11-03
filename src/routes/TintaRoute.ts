@@ -26,7 +26,7 @@ const router = Router();
  *               items:
  *                 $ref: '#/components/schemas/Tinta'
  */
-router.get("/tintas", tintaController.listar);
+router.get("/", tintaController.listar);
 
 /**
  * @swagger
@@ -51,7 +51,7 @@ router.get("/tintas", tintaController.listar);
  *       404:
  *         description: Tinta não encontrada
  */
-router.get("/tintas/:id", tintaController.buscarPorId);
+router.get("/:id", tintaController.buscarPorId);
 
 /**
  * @swagger
@@ -71,7 +71,7 @@ router.get("/tintas/:id", tintaController.buscarPorId);
  *       400:
  *         description: Dados inválidos
  */
-router.post("/tintas", tintaController.criarTinta);
+router.post("/", tintaController.criarTinta);
 
 /**
  * @swagger
@@ -98,7 +98,7 @@ router.post("/tintas", tintaController.criarTinta);
  *       404:
  *         description: Tinta não encontrada
  */
-router.put("/tintas/:id", tintaController.atualizarTinta);
+router.put("/:id", tintaController.atualizarTinta);
 
 /**
  * @swagger
@@ -119,6 +119,6 @@ router.put("/tintas/:id", tintaController.atualizarTinta);
  *       404:
  *         description: Tinta não encontrada
  */
-router.delete("/tintas/:id", tintaController.deletarTinta);
+router.delete("/:id", tintaController.deletarTinta);
 
 export default router;
