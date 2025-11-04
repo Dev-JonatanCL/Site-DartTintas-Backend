@@ -1,55 +1,79 @@
+import 'dotenv/config';
 import express from 'express';
-import { sequelize } from './config/database.js';
-import tintaRoutes from './routes/TintaRoute.js';
-import { setupSwagger } from './config/swagger.js';
-import { connectToDatabase } from './config/database.js';
-
-await connectToDatabase();
+import cors from 'cors';
+import fs from 'fs';
+import path from 'path';
+import { sequelize, connectToDatabase } from './config/database';
+import tintaRoutes from './routes/TintaRoute';
+import clienteRouter from './routes/ClienteRoute';
+import { setupSwagger } from './config/swagger';
 
 const app = express();
+const allowedOrigins = [
+  'http://127.0.0.1:5500',
+  'http://localhost:5500',
+  'https://site-darttintas-backend.azurewebsites.net',
+];
+
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error(`Origem ${origin} não permitida pelo CORS`));
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}));
+
+const uploadsDir = path.join(__dirname, 'uploads');
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
+  console.log('Pasta /uploads criada');
+}
+
 app.use(express.json());
+app.use('/uploads', express.static('uploads'));
 
 setupSwagger(app);
 
-app.get ("/health", async (req, res) => {
-    
-   try {
-    await sequelize.authenticate();
-    res.json ({
-        status: 'ok',
-        message: 'Banco de dados conectado',
-        timestamp: new Date()
-    })
-   } catch (error) {
-    res.status (500).json ({
-        status: 'error',
-        menssage: 'Erro ao conectar ao banco de dados',
-        timestamp: new Date()
-    })
-   }
-});
-app.use(express.json());
-
 app.use('/tintas', tintaRoutes);
+app.use('/auth', clienteRouter);
 
-app.use('/uploads', express.static('uploads'));
-
-app.get("/", (req, res) => {
-    res.send ("Api rodando")
+app.get('/', (req, res) => {
+  res.json({ message: 'API D\'art Tintas rodando!' });
 });
 
 const startServer = async () => {
-    try {
-        await sequelize.authenticate();
-            console.log("Conexão com o banco de dados estabelecida com sucesso.");
+  try {
+    await connectToDatabase();
+    console.log('Banco conectado e tabelas sincronizadas!');
 
-        app.listen (3000, () => {
-            console.log ("Api rodando na porta 3000")
+    const PORT = process.env.PORT || 3000;
+    app.listen(PORT, () => {
+      console.log(`API rodando em https://site-darttintas-backend.azurewebsites.net`);
+      console.log(`Swagger: https://site-darttintas-backend.azurewebsites.net/api-docs`);
     });
-
-    } catch (error) {
-        console.error("Não foi possivel conectar ao banco de dados:", error);
-    }
+  } catch (error: any) {
+    console.error('Falha ao iniciar o servidor:', error.message || error);
+    process.exit(1);
+  }
 };
+
+process.on('SIGINT', async () => {
+  console.log('\nEncerrando servidor...');
+  await sequelize.close();
+  console.log('Conexão com banco fechada.');
+  process.exit(0);
+});
+
+process.on('SIGTERM', async () => {
+  await sequelize.close();
+  process.exit(0);
+});
 
 startServer();
