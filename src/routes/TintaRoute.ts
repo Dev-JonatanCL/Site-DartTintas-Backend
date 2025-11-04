@@ -1,6 +1,6 @@
 import { Router } from "express";
-import tintaController from "../controllers/TintaController.js";
-import upload from "../config/multer.js"; // importa a config do multer
+import TintaController from "../controllers/TintaController";
+import upload from "../config/multer"; // importa a config do multer
 
 const router = Router();
 
@@ -63,7 +63,7 @@ const router = Router();
  *               items:
  *                 $ref: '#/components/schemas/Tinta'
  */
-router.get("/", tintaController.listar);
+router.get('/', TintaController.listar);
 
 /**
  * @swagger
@@ -88,7 +88,7 @@ router.get("/", tintaController.listar);
  *       404:
  *         description: Tinta não encontrada
  */
-router.get("/:id", tintaController.buscarPorId);
+router.get("/:id", TintaController.buscarPorId);
 
 /**
  * @swagger
@@ -124,7 +124,7 @@ router.get("/:id", tintaController.buscarPorId);
  *       400:
  *         description: Dados inválidos
  */
-router.post("/", upload.single("imagem"), tintaController.criarTinta);
+router.post("/", upload.single("imagem"), TintaController.criarTinta);
 
 /**
  * @swagger
@@ -167,7 +167,7 @@ router.post("/", upload.single("imagem"), tintaController.criarTinta);
  *       404:
  *         description: Tinta não encontrada
  */
-router.put("/:id", upload.single("imagem"), tintaController.atualizarTinta);
+router.put("/:id", upload.single("imagem"), TintaController.atualizararTinta);
 
 /**
  * @swagger
@@ -188,6 +188,6 @@ router.put("/:id", upload.single("imagem"), tintaController.atualizarTinta);
  *       404:
  *         description: Tinta não encontrada
  */
-router.delete("/:id", tintaController.deletarTinta);
+router.delete("/:id", TintaController.deletarTinta);
 
 export default router;

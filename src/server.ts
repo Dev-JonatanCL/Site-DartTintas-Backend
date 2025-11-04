@@ -1,55 +1,50 @@
+import 'dotenv/config';
 import express from 'express';
-import { sequelize } from './config/database.js';
-import tintaRoutes from './routes/TintaRoute.js';
-import { setupSwagger } from './config/swagger.js';
-import { connectToDatabase } from './config/database.js';
+import { sequelize, connectToDatabase } from './config/database';
+import tintaRoutes from './routes/TintaRoute';
+import clienteRouter from './routes/ClienteRoute';
+import { setupSwagger } from './config/swagger';
 
-await connectToDatabase();
+// Associa modelos
+const Tinta = require('./models/Tinta').default;
+const Cliente = require('./models/Cliente').default;
+Tinta.init(Tinta.getAttributes(), { ...Tinta.options, sequelize });
+Cliente.init(Cliente.getAttributes(), { ...Cliente.options, sequelize });
 
 const app = express();
 app.use(express.json());
-
 setupSwagger(app);
 
-app.get ("/health", async (req, res) => {
-    
-   try {
-    await sequelize.authenticate();
-    res.json ({
-        status: 'ok',
-        message: 'Banco de dados conectado',
-        timestamp: new Date()
-    })
-   } catch (error) {
-    res.status (500).json ({
-        status: 'error',
-        menssage: 'Erro ao conectar ao banco de dados',
-        timestamp: new Date()
-    })
-   }
-});
-app.use(express.json());
-
-app.use('/tintas', tintaRoutes);
-
 app.use('/uploads', express.static('uploads'));
-
-app.get("/", (req, res) => {
-    res.send ("Api rodando")
-});
+app.use('/tintas', tintaRoutes);
+app.use('/auth', clienteRouter);
+app.get('/', (req, res) => res.send('API rodando'));
 
 const startServer = async () => {
-    try {
-        await sequelize.authenticate();
-            console.log("Conexão com o banco de dados estabelecida com sucesso.");
+  try {
+    await connectToDatabase(); // APAGA E RECRIA
+    console.log('Banco recriado com sucesso!');
 
-        app.listen (3000, () => {
-            console.log ("Api rodando na porta 3000")
+    app.listen(3000, () => {
+      console.log('API rodando na porta 3000');
     });
-
-    } catch (error) {
-        console.error("Não foi possivel conectar ao banco de dados:", error);
-    }
+  } catch (error) {
+    console.error('Falha ao iniciar servidor:', error);
+    process.exit(1);
+  }
 };
+
+// FECHA A CONEXÃO APENAS AO ENCERRAR
+process.on('SIGINT', async () => {
+  console.log('\nEncerrando...');
+  await sequelize.close();
+  console.log('Conexão com banco fechada.');
+  process.exit(0);
+});
+
+process.on('SIGTERM', async () => {
+  await sequelize.close();
+  process.exit(0);
+});
 
 startServer();
