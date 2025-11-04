@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express';
-import Tinta from '../models/Tintas.ts';
+import Tinta from '../models/Tintas.js';
 
 export default {
     async listar (req: Request, res: Response){
