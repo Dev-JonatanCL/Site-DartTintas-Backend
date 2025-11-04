@@ -16,7 +16,7 @@ const options: swaggerJSDoc.Options = {
     },
     servers: [
       {
-        url: 'http://localhost:3000',
+        url: 'https://site-darttintas-backend.azurewebsites.net',
         description: 'Servidor local de desenvolvimento',
       },
     ],
@@ -95,5 +95,5 @@ export const setupSwagger = (app: Express) => {
   };
 
   app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec, swaggerOptions));
-  console.log('Swagger estilizado rodando em: http://localhost:3000/api-docs');
+  console.log('Swagger estilizado rodando em: https://site-darttintas-backend.azurewebsites.net/api-docs');
 };
