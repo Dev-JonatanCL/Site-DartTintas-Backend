@@ -1,6 +1,6 @@
 import { Router } from "express";
 import TintaController from "../controllers/TintaController";
-import upload from "../config/multer"; // importa a config do multer
+import upload from "../config/multer";
 
 const router = Router();
 
@@ -20,42 +20,38 @@ const router = Router();
  *       properties:
  *         id:
  *           type: integer
- *           example: 1
- *         nome:
+ *         marca:
  *           type: string
- *           example: Tinta Azul Premium
- *         tipo:
+ *           example: LUKSCOLOR
+ *         descricao:
  *           type: string
- *           example: Acrílica
- *         preco:
+ *           example: ESMALTE SINTETICO
+ *         acabamento:
+ *           type: string
+ *           example: FOSCO
+ *         unidade_tamanho:
+ *           type: string
+ *           example: 0.9 ML
+ *         cor_base:
+ *           type: string
+ *           example: BRANCO
+ *         valor:
  *           type: number
- *           example: 89.90
- *         imagem:
+ *           example: 21.89
+ *         image:
  *           type: string
- *           example: /uploads/1730023123456.png
- *     TintaInput:
- *       type: object
- *       properties:
- *         nome:
- *           type: string
- *           example: Tinta Azul Premium
- *         tipo:
- *           type: string
- *           example: Acrílica
- *         preco:
- *           type: number
- *           example: 89.90
+ *           example: /uploads/ESMALTE.jpg
  */
 
 /**
  * @swagger
  * /tintas:
  *   get:
- *     summary: Lista todas as tintas cadastradas
+ *     summary: Lista todas as tintas
  *     tags: [Tintas]
  *     responses:
  *       200:
- *         description: Lista de tintas retornada com sucesso
+ *         description: Lista de tintas
  *         content:
  *           application/json:
  *             schema:
@@ -102,25 +98,43 @@ router.get("/:id", TintaController.buscarPorId);
  *         multipart/form-data:
  *           schema:
  *             type: object
+ *             required:
+ *               - marca
+ *               - descricao
+ *               - acabamento
+ *               - unidade_tamanho
+ *               - cor_base
+ *               - valor
+ *               - imagem
  *             properties:
- *               nome:
+ *               marca:
  *                 type: string
- *                 example: LucksColor
- *               cor:
+ *                 example: LUKSCOLOR
+ *               descricao:
  *                 type: string
- *                 example: Azul
- *               tipo:
+ *                 example: ESMALTE SINTETICO
+ *               acabamento:
  *                 type: string
- *                 example: Acrílica
- *               preco:
+ *                 example: FOSCO
+ *               unidade_tamanho:
+ *                 type: string
+ *                 example: 0.9 ML
+ *               cor_base:
+ *                 type: string
+ *                 example: BRANCO
+ *               valor:
  *                 type: number
- *                 example: 89.90
+ *                 example: 21.89
  *               imagem:
  *                 type: string
  *                 format: binary
  *     responses:
  *       201:
  *         description: Tinta criada com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Tinta'
  *       400:
  *         description: Dados inválidos
  */
@@ -146,24 +160,34 @@ router.post("/", upload.single("imagem"), TintaController.criarTinta);
  *           schema:
  *             type: object
  *             properties:
- *               nome:
+ *               marca:
  *                 type: string
- *                 example: LucksColor
- *               cor:
+ *                 example: LUKSCOLOR
+ *               descricao:
  *                 type: string
- *                 example: Vermelho
- *               tipo:
+ *                 example: TINTA ACRILICA PREMIUM
+ *               acabamento:
  *                 type: string
- *                 example: Epóxi
- *               preco:
+ *                 example: ACETINADO
+ *               unidade_tamanho:
+ *                 type: string
+ *                 example: 3.6 L
+ *               cor_base:
+ *                 type: string
+ *                 example: BRANCO
+ *               valor:
  *                 type: number
- *                 example: 99.90
+ *                 example: 89.90
  *               imagem:
  *                 type: string
  *                 format: binary
  *     responses:
  *       200:
  *         description: Tinta atualizada com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Tinta'
  *       404:
  *         description: Tinta não encontrada
  */

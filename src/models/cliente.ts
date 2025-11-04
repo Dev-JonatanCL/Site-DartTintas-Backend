@@ -30,7 +30,9 @@ Cliente.init(
   {
     sequelize,
     modelName: 'Cliente',
-    tableName: 'users'
+    tableName: 'users',
+    timestamps: false,
+    underscored: false
   }
 );
 

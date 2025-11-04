@@ -4,7 +4,6 @@ import jwt from 'jsonwebtoken';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'sua_chave_secreta_muito_forte_123456789';
 
-// POST /auth/login
 export const login = async (req: Request, res: Response) => {
   const { email, senha } = req.body;
 
@@ -14,7 +13,6 @@ export const login = async (req: Request, res: Response) => {
 
   try {
     const cliente = await ClienteService.login(email, senha);
-
     const token = jwt.sign(
       { id: cliente.id, email: cliente.email, rule: cliente.rule },
       JWT_SECRET,
@@ -35,7 +33,6 @@ export const login = async (req: Request, res: Response) => {
   }
 };
 
-// POST /auth/register
 export const register = async (req: Request, res: Response) => {
   const { nome, email, senha } = req.body;
 
