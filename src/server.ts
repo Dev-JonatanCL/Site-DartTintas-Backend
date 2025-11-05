@@ -9,10 +9,12 @@ import clienteRouter from './routes/ClienteRoute';
 import { setupSwagger } from './config/swagger';
 
 const app = express();
+
 app.use(cors({
-  origin: '*',           // ← LIBERA TUDO
+  origin: '*',
+  credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
 }));
 
 const uploadsDir = path.join(__dirname, 'uploads');
@@ -36,23 +38,21 @@ app.get('/', (req, res) => {
 const startServer = async () => {
   try {
     await connectToDatabase();
-    console.log('Banco conectado e tabelas sincronizadas!');
 
     const PORT = process.env.PORT || 3000;
     app.listen(PORT, () => {
-      console.log(`API rodando em https://site-darttintas-backend.azurewebsites.net`);
-      console.log(`Swagger: https://site-darttintas-backend.azurewebsites.net/api-docs`);
+      const url = process.env.NODE_ENV === 'production'
+        ? 'https://site-darttintas-backend.azurewebsites.net'
+        : `http://localhost:${PORT}`;
+
     });
   } catch (error: any) {
-    console.error('Falha ao iniciar o servidor:', error.message || error);
     process.exit(1);
   }
 };
 
 process.on('SIGINT', async () => {
-  console.log('\nEncerrando servidor...');
   await sequelize.close();
-  console.log('Conexão com banco fechada.');
   process.exit(0);
 });
 
