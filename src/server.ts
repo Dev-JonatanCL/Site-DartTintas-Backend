@@ -9,23 +9,8 @@ import clienteRouter from './routes/ClienteRoute';
 import { setupSwagger } from './config/swagger';
 
 const app = express();
-const allowedOrigins = [
-  'http://127.0.0.1:5500',
-  'http://localhost:5500',
-  'https://sitedarttintas.azurewebsites.net',
-];
-
 app.use(cors({
-  origin: (origin, callback) => {
-    if (!origin) return callback(null, true);
-    
-    if (allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error(`Origem ${origin} não permitida pelo CORS`));
-    }
-  },
-  credentials: true,
+  origin: '*',           // ← LIBERA TUDO
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
