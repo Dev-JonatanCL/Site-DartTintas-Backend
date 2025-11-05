@@ -1,4 +1,4 @@
-import Cliente from '../models/cliente';
+import Cliente from '../models/Cliente';
 import bcrypt from 'bcryptjs';
 
 export const ClienteService = {
