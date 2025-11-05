@@ -17,7 +17,7 @@ export const connectToDatabase = async () => {
     await sequelize.authenticate();
     await sequelize.sync({alter: false});
 
-    const Cliente = require('../models/cliente').default;
+    const Cliente = require('src\models\cliente.ts').default;
     const adminExists = await Cliente.findOne({ where: { email: 'admin@dart.com' } });
     if (!adminExists) {
       const bcrypt = require('bcryptjs');
