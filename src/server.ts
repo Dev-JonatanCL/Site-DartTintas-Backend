@@ -15,7 +15,6 @@ app.use(cors());
 const uploadsDir = path.join(__dirname, 'uploads');
 if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir, { recursive: true });
-  console.log('✅ Pasta /uploads criada em:', uploadsDir);
 }
 
 app.use(express.json());
@@ -37,24 +36,18 @@ const startServer = async () => {
 
     const PORT = process.env.PORT || 3000;
     app.listen(PORT, () => {
-      console.log(`🚀 Servidor rodando na porta ${PORT}`);
-      console.log(`📚 Swagger: https://site-darttintas-backend.azurewebsites.net/api-docs`);
-      console.log(`📁 Uploads em: ${uploadsDir}`);
     });
   } catch (error: any) {
-    console.error('❌ Erro ao iniciar servidor:', error);
     process.exit(1);
   }
 };
 
 process.on('SIGINT', async () => {
-  console.log('⏹️ Encerrando servidor...');
   await sequelize.close();
   process.exit(0);
 });
 
 process.on('SIGTERM', async () => {
-  console.log('⏹️ Encerrando servidor...');
   await sequelize.close();
   process.exit(0);
 });

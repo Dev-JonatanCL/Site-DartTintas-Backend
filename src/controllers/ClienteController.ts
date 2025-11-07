@@ -2,7 +2,7 @@ import type { Request, Response } from 'express';
 import { ClienteService } from '../service/ClienteService';
 import jwt from 'jsonwebtoken';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'sua_chave_secreta_muito_forte_123456789';
+const JWT_SECRET = '0c3829d820ab2903276aa048d8463b0b9cfc18ae05d60a83c75afd711bb1e981a6992175643391314df37cebcaef2a6e4053eb90b259297b4619eb2c961d78e0';
 
 export const login = async (req: Request, res: Response) => {
   const { email, senha } = req.body;
