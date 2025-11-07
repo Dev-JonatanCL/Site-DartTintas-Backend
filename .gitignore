@@ -4,9 +4,6 @@ node_modules/
 # Compilado
 dist/
 
-# Banco de dados
-database.sqlite
-
 # Ambiente
 .env
 .env.local
