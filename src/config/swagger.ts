@@ -65,6 +65,7 @@ export const setupSwagger = (app: Express) => {
     customfavIcon: '/favicon.ico',
   };
 
+
   app.use(
     '/api-docs',
     swaggerUI.serve,
@@ -75,5 +76,4 @@ export const setupSwagger = (app: Express) => {
     res.redirect('/api-docs/');
   });
 
-  console.log('Swagger UI rodando em: https://site-darttintas-backend.azurewebsites.net/api-docs');
 };

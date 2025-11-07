@@ -18,9 +18,6 @@ export default {
 
   async criarTinta(req: Request, res: Response) {
     try {
-      console.log('BODY →', req.body);
-      console.log('FILE →', req.file);
-
       const {
         marca,
         descricao,
@@ -51,11 +48,9 @@ export default {
         image,
       });
 
-      console.log('INSERT OK →', novaTinta.toJSON());
 
       return res.status(201).json(novaTinta);
     } catch (err: any) {
-      console.error('Erro ao criar tinta:', err);
       return res.status(500).json({
         error: 'Falha ao criar tinta',
         details: err.message,
