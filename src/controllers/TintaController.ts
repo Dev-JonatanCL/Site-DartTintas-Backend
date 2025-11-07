@@ -34,7 +34,7 @@ export default {
         return res.status(400).json({ error: 'Todos os campos obrigatórios devem ser enviados' });
       }
 
-      const image = req.file ? `/uploads/${req.file.filename}` : null;
+      const image = req.file ? `../uploads/${req.file.filename}` : null;
 
       const valorNum = parseFloat(valor as string);
       if (isNaN(valorNum)) {
@@ -71,7 +71,7 @@ export default {
       if (!tinta) return res.status(404).json({ error: 'Tinta não encontrada' });
 
       const campos: any = { ...req.body };
-      if (req.file) campos.image = `/uploads/${req.file.filename}`;
+      if (req.file) campos.image = `../uploads/${req.file.filename}`;
       if (campos.valor) campos.valor = parseFloat(campos.valor);
 
       await tinta.update(campos);

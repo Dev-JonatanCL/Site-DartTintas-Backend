@@ -98,14 +98,6 @@ router.get("/:id", TintaController.buscarPorId);
  *         multipart/form-data:
  *           schema:
  *             type: object
- *             required:
- *               - marca
- *               - descricao
- *               - acabamento
- *               - unidade_tamanho
- *               - cor_base
- *               - valor
- *               - imagem
  *             properties:
  *               marca: { type: string, example: "LUKSCOLOR" }
  *               descricao: { type: string, example: "ESMALTE SINTÉTICO" }
