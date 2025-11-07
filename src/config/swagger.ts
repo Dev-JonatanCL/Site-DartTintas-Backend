@@ -1,6 +1,7 @@
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUI from 'swagger-ui-express';
 import type { Express } from 'express';
+import path from 'path';
 
 const options: swaggerJSDoc.Options = {
   definition: {
@@ -17,11 +18,17 @@ const options: swaggerJSDoc.Options = {
     servers: [
       {
         url: 'https://site-darttintas-backend.azurewebsites.net',
-        description: 'Servidor local de desenvolvimento',
+        description: 'Servidor de Produção (Azure)',
+      },
+      {
+        url: 'http://localhost:3000',
+        description: 'Servidor Local (Desenvolvimento)',
       },
     ],
   },
-  apis: ['./src/routes/*.ts'],
+  apis: [
+    path.join(__dirname, '../routes/*.ts').replace(/\\/g, '/'),
+  ],
 };
 
 const swaggerSpec = swaggerJSDoc(options);
@@ -38,61 +45,35 @@ export const setupSwagger = (app: Express) => {
       layout: 'BaseLayout',
       showExtensions: true,
       showCommonExtensions: true,
+      tryItOutEnabled: true,
     },
     customCss: `
-      /* Fonte limpa e tamanho maior */
-      body {
-        font-family: Arial, sans-serif;
-        background-color: #f9f9f9;
-      }
-
-      .topbar {
-        background-color: #4CAF50 !important;
-      }
-
-      .info h1 {
-        font-size: 2em;
-        color: #333;
-      }
-
-      .opblock {
-        border-radius: 8px;
-        margin-bottom: 12px;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-        padding: 8px;
-      }
-
-      .opblock-get {
-        border-left: 5px solid #2196F3 !important; /* GET azul */
-      }
-      .opblock-post {
-        border-left: 5px solid #4CAF50 !important; /* POST verde */
-      }
-      .opblock-put {
-        border-left: 5px solid #FF9800 !important; /* PUT laranja */
-      }
-      .opblock-delete {
-        border-left: 5px solid #F44336 !important; /* DELETE vermelho */
-      }
-
-      .opblock-summary-method {
-        font-weight: bold;
-        color: #555;
-      }
-
-      .opblock-summary-path {
-        font-family: 'Courier New', monospace;
-        font-size: 1em;
-      }
-
-      .scheme-container {
-        background-color: #fff;
-        border-radius: 8px;
-        padding: 10px;
-      }
+      body { font-family: 'Segoe UI', sans-serif; background: #f4f6f9; }
+      .topbar { background: linear-gradient(135deg, #4CAF50, #388E3C) !important; }
+      .info h1 { font-size: 2.2em; color: #2c3e50; }
+      .opblock { border-radius: 10px; margin: 12px 0; box-shadow: 0 3px 8px rgba(0,0,0,0.1); }
+      .opblock-get { border-left: 6px solid #2196F3 !important; }
+      .opblock-post { border-left: 6px solid #4CAF50 !important; }
+      .opblock-put { border-left: 6px solid #FF9800 !important; }
+      .opblock-delete { border-left: 6px solid #F44336 !important; }
+      .btn.execute { background: #4CAF50 !important; color: white; }
+      .btn.execute:hover { background: #388E3C !important; }
+      .scheme-container { background: white; border-radius: 10px; padding: 12px; }
+      .models { display: none !important; }
     `,
     customSiteTitle: "Dart Tintas - API Docs",
+    customfavIcon: '/favicon.ico',
   };
 
-  app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec, swaggerOptions));
+
+  app.use(
+    '/api-docs',
+    swaggerUI.serve,
+    swaggerUI.setup(swaggerSpec, swaggerOptions)
+  );
+
+  app.get('/api-docs', (req, res) => {
+    res.redirect('/api-docs/');
+  });
+
 };

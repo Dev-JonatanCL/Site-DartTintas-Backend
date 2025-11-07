@@ -90,7 +90,7 @@ router.get("/:id", TintaController.buscarPorId);
  * @swagger
  * /tintas:
  *   post:
- *     summary: Cria uma nova tinta com imagem
+ *     summary: Cria uma nova tinta
  *     tags: [Tintas]
  *     requestBody:
  *       required: true
@@ -99,36 +99,23 @@ router.get("/:id", TintaController.buscarPorId);
  *           schema:
  *             type: object
  *             properties:
- *               marca:
- *                 type: string
- *                 example: LUKSCOLOR
- *               descricao:
- *                 type: string
- *                 example: ESMALTE SINTETICO
- *               acabamento:
- *                 type: string
- *                 example: FOSCO
- *               unidade_tamanho:
- *                 type: string
- *                 example: 0.9 ML
- *               cor_base:
- *                 type: string
- *                 example: BRANCO
- *               valor:
- *                 type: number
- *                 example: 21.89
+ *               marca: { type: string, example: "LUKSCOLOR" }
+ *               descricao: { type: string, example: "ESMALTE SINTÉTICO" }
+ *               acabamento: { type: string, example: "FOSCO" }
+ *               unidade_tamanho: { type: string, example: "0.9 L" }
+ *               cor_base: { type: string, example: "BRANCO" }
+ *               valor: { type: number, example: 21.89 }
  *               imagem:
  *                 type: string
  *                 format: binary
+ *                 description: Imagem da tinta
  *     responses:
  *       201:
- *         description: Tinta criada com sucesso
+ *         description: Tinta criada
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Tinta'
- *       400:
- *         description: Dados inválidos
  */
 router.post("/", upload.single("imagem"), TintaController.criarTinta);
 
